@@ -1,0 +1,116 @@
+===============================================================================
+  curl commands
+  Server must be running on :4000
+  Start the server: go run .
+===============================================================================
+
+
+───────────────────────────────────────────────────────────────────────────────
+  GET /health
+───────────────────────────────────────────────────────────────────────────────
+
+curl -i localhost:4000/health
+
+
+───────────────────────────────────────────────────────────────────────────────
+  GET /students
+───────────────────────────────────────────────────────────────────────────────
+
+curl -i localhost:4000/students
+
+
+───────────────────────────────────────────────────────────────────────────────
+  GET /students/{id}
+───────────────────────────────────────────────────────────────────────────────
+
+curl -i localhost:4000/students/1
+
+curl -i localhost:4000/students/4
+
+curl -i localhost:4000/students/99
+
+curl -i localhost:4000/students/abc
+
+curl -i localhost:4000/students/0
+
+curl -i localhost:4000/students/-1
+
+
+───────────────────────────────────────────────────────────────────────────────
+  POST /students — valid (expect 201)
+───────────────────────────────────────────────────────────────────────────────
+
+curl -i -X POST localhost:4000/students -H "Content-Type: application/json" -d '{"name":"Diana Prince","programme":"BSc Information Systems","year":2}'
+
+curl -i -X POST localhost:4000/students -H "Content-Type: application/json" -d '{"name":"Tom Hardy","programme":"BSc Computer Science","year":1}'
+
+curl -i -X POST localhost:4000/students -H "Content-Type: application/json" -d '{"name":"Sara Lowe","programme":"BSc Computer Science","year":4}'
+
+
+───────────────────────────────────────────────────────────────────────────────
+  POST /students — validation failures (expect 422)
+───────────────────────────────────────────────────────────────────────────────
+
+curl -i -X POST localhost:4000/students -H "Content-Type: application/json" -d '{"name":"","programme":"BSc CS","year":2}'
+
+curl -i -X POST localhost:4000/students -H "Content-Type: application/json" -d '{"name":"Diana Prince","programme":"","year":2}'
+
+curl -i -X POST localhost:4000/students -H "Content-Type: application/json" -d '{"name":"Diana Prince","programme":"BSc CS","year":0}'
+
+curl -i -X POST localhost:4000/students -H "Content-Type: application/json" -d '{"name":"Diana Prince","programme":"BSc CS","year":5}'
+
+curl -i -X POST localhost:4000/students -H "Content-Type: application/json" -d '{"name":"","programme":"","year":9}'
+
+
+───────────────────────────────────────────────────────────────────────────────
+  POST /students — readJSON failures (expect 400)
+───────────────────────────────────────────────────────────────────────────────
+
+curl -i -X POST localhost:4000/students -H "Content-Type: application/json" -d ''
+
+curl -i -X POST localhost:4000/students -H "Content-Type: application/json" -d '{"name": "Diana"'
+
+curl -i -X POST localhost:4000/students -H "Content-Type: application/json" -d '{"name":"Diana Prince","programme":"BSc CS","year":"two"}'
+
+curl -i -X POST localhost:4000/students -H "Content-Type: application/json" -d '{"name":"Diana Prince","programme":"BSc CS","year":2,"gpa":3.9}'
+
+curl -i -X POST localhost:4000/students -H "Content-Type: application/json" -d '{"name":"Diana","programme":"BSc CS","year":1}{"name":"Extra","programme":"BSc CS","year":1}'
+
+
+───────────────────────────────────────────────────────────────────────────────
+  PUT /students/{id} — valid (expect 200)
+───────────────────────────────────────────────────────────────────────────────
+
+curl -i -X PUT localhost:4000/students/1 -H "Content-Type: application/json" -d '{"name":"Eve Castillo-Updated","programme":"BSc Computer Science","year":3}'
+
+
+───────────────────────────────────────────────────────────────────────────────
+  PUT /students/{id} — validation failures (expect 422)
+───────────────────────────────────────────────────────────────────────────────
+
+curl -i -X PUT localhost:4000/students/1 -H "Content-Type: application/json" -d '{"name":"","programme":"BSc CS","year":2}'
+
+curl -i -X PUT localhost:4000/students/1 -H "Content-Type: application/json" -d '{"name":"Eve Castillo","programme":"BSc CS","year":7}'
+
+curl -i -X PUT localhost:4000/students/1 -H "Content-Type: application/json" -d '{"name":"","programme":"","year":0}'
+
+
+───────────────────────────────────────────────────────────────────────────────
+  PUT /students/{id} — not found (expect 404)
+───────────────────────────────────────────────────────────────────────────────
+
+curl -i -X PUT localhost:4000/students/99 -H "Content-Type: application/json" -d '{"name":"Ghost Student","programme":"BSc CS","year":2}'
+
+
+───────────────────────────────────────────────────────────────────────────────
+  GET /courses
+───────────────────────────────────────────────────────────────────────────────
+
+curl -i localhost:4000/courses
+
+
+───────────────────────────────────────────────────────────────────────────────
+  GET /headers
+───────────────────────────────────────────────────────────────────────────────
+
+curl -i localhost:4000/headers
